@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.venv/
+venv/
+
+# PyInstaller
+build/
+dist/
+*.manifest
+
+# Buildozer / python-for-android
+.buildozer/
+bin/
+
+# IDE
+.idea/
+.vscode/
+
+# 操作系统
+Thumbs.db
+.DS_Store
+
+# 会话导出原文（体积大且噪音多，只保留提炼后的 docs/开发过程.md）
+docs/devlog/

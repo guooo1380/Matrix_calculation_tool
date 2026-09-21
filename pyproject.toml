@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mathtools"
+dynamic = ["version"]
+description = "纯 Python 实现的矩阵运算工具，提供命令行、Tkinter、Kivy 与 pywebview 四种界面"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "guooo1380" }]
+keywords = ["matrix", "linear-algebra", "tkinter", "kivy", "education"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Microsoft :: Windows",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+
+# 矩阵运算全部手写，运行命令行版不需要任何第三方依赖
+dependencies = []
+
+[project.optional-dependencies]
+# Kivy 界面与安卓打包
+android = ["kivy==2.3.1"]
+# pywebview 桌面版（需要系统已装 Microsoft Edge WebView2 运行时）
+desktop = ["pywebview>=6.0"]
+# 打包工具链；buildozer 与 cython 只在 WSL/Ubuntu 里装
+package = ["pyinstaller==6.22.3"]
+android-build = ["buildozer", "cython==0.29.36"]
+
+[project.scripts]
+mathtools = "mathtools.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.dynamic]
+version = { attr = "mathtools.__version__" }

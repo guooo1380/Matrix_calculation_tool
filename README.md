@@ -74,12 +74,13 @@ pip install -e ".[package]"   # PyInstaller，打 Windows exe
 │           └── kivy_app.py      # Kivy 触屏界面
 ├── tests/
 │   ├── test_core.py             # 运算核心单元测试（CI 跑这个）
-│   └── kivy/
-│       ├── selftest.py          # Kivy 端到端自测，会开真实窗口
-│       └── layoutcheck.py       # 手机竖屏布局溢出检查
+│   ├── kivy/
+│   │   ├── selftest.py          # Kivy 端到端自测，会开真实窗口
+│   │   └── layoutcheck.py       # 手机竖屏布局溢出检查
+│   └── desktop/
+│       └── selftest.py          # pywebview 桌面版自检，会开真实窗口
 ├── webapp/                      # 网页版界面，pywebview 桌面版直接复用它
 ├── matrix_desktop.py            # pywebview 桌面版入口
-├── _desktop_selftest.py         # 桌面版自检，会开真实窗口
 ├── buildozer.spec               # 安卓 APK 打包配置
 ├── 矩阵计算工具.spec             # PyInstaller 桌面 exe 打包配置
 ├── build_apk.sh                 # 在 WSL Ubuntu 里构建 APK
@@ -98,7 +99,7 @@ python tests/kivy/selftest.py
 python tests/kivy/layoutcheck.py
 
 # pywebview 桌面版自检（需要显示器，会真的开窗口）
-python _desktop_selftest.py
+python tests/desktop/selftest.py
 ```
 
 `tests/kivy/` 下的脚本不匹配 `test_*.py`，因此不会被 unittest 自动发现，也不会在无显示器的 CI 里执行。

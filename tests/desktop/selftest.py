@@ -1,7 +1,11 @@
 """pywebview 桌面版自检：真的开一个窗口，检查页面、JS API 和计算链路后自动关闭。
 
-用法： python _desktop_selftest.py
+用法： python tests/desktop/selftest.py
 """
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 import webview
 

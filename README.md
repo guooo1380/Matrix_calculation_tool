@@ -6,9 +6,7 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Android-lightgrey)
 
-<!-- 仓库建好后把下面这行换成 CI 徽章：
-[![tests](https://github.com/<你的用户名>/<仓库名>/actions/workflows/tests.yml/badge.svg)](https://github.com/<你的用户名>/<仓库名>/actions/workflows/tests.yml)
--->
+[![tests](https://github.com/guooo1380/mathTools/actions/workflows/tests.yml/badge.svg)](https://github.com/guooo1380/mathTools/actions/workflows/tests.yml)
 
 ## 支持的运算
 

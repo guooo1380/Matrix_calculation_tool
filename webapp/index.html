@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+    <meta name="theme-color" content="#4338CA">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>矩阵计算工具</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+    <h1 class="header-title">矩阵计算工具</h1>
+    <p class="header-sub">Matrix Calculator</p>
+    <button id="feedback-open" class="header-btn">建议</button>
+</header>
+
+<main class="main">
+
+    <!-- 运算选择 -->
+    <nav class="op-scroll">
+        <button class="op-pill active" data-op="transpose">转置</button>
+        <button class="op-pill" data-op="inverse">逆矩阵</button>
+        <button class="op-pill" data-op="determinant">行列式</button>
+        <button class="op-pill" data-op="multiply">乘法</button>
+        <button class="op-pill" data-op="standard">标准形</button>
+    </nav>
+
+    <!-- 维度设置 -->
+    <section class="card">
+        <h2 class="card-title">设置维度</h2>
+        <div id="dim-inputs" class="dim-grid"></div>
+        <button id="gen-btn" class="btn btn-outline">生成输入格</button>
+    </section>
+
+    <!-- 矩阵输入 -->
+    <section class="card" id="matrix-card" hidden>
+        <div id="matrix-area"></div>
+    </section>
+
+    <!-- 计算 / 清空 -->
+    <div class="btn-row" id="calc-area" hidden>
+        <button id="clear-btn" class="btn btn-ghost">清空</button>
+        <button id="calc-btn" class="btn btn-primary">计 算</button>
+    </div>
+
+    <!-- 结果 -->
+    <section class="card" id="result-card" hidden>
+        <h2 class="card-title">计算结果</h2>
+        <div id="result-content"></div>
+    </section>
+
+</main>
+
+<!-- 建议反馈 -->
+<div id="feedback-mask" class="mask" hidden></div>
+<div id="feedback-sheet" class="sheet" hidden>
+    <div class="sheet-handle"></div>
+    <h2 class="sheet-title">提建议</h2>
+    <p class="sheet-desc">说说你想要的功能或不好用的地方，会直接送到开发者收件箱。</p>
+    <form id="feedback-form" name="suggestions" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+        <input type="hidden" name="form-name" value="suggestions">
+        <input type="hidden" name="bot-field" value="">
+        <label class="field-label" for="fb-msg">建议内容 *</label>
+        <textarea id="fb-msg" name="message" rows="4" required placeholder="想要什么新功能？哪里不好用？"></textarea>
+        <label class="field-label" for="fb-contact">联系方式（选填）</label>
+        <input id="fb-contact" name="contact" type="text" placeholder="邮箱 / 微信，方便回复你">
+        <div class="sheet-actions">
+            <button type="button" id="feedback-cancel" class="btn btn-ghost">取消</button>
+            <button type="submit" id="feedback-submit" class="btn btn-primary">提交</button>
+        </div>
+    </form>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -77,9 +77,12 @@ pip install -e ".[package]"   # PyInstaller，打 Windows exe
 │   │   └── layoutcheck.py       # 手机竖屏布局溢出检查
 │   └── desktop/
 │       └── selftest.py          # pywebview 桌面版自检，会开真实窗口
-├── webapp/                      # 网页版界面，pywebview 桌面版直接复用它
+├── webapp/                      # 网页版界面，pywebview 桌面版与安卓壳都直接复用它
 ├── matrix_desktop.py            # pywebview 桌面版入口
-├── buildozer.spec               # 安卓 APK 打包配置
+├── android-build/               # 安卓 WebView 壳工程 + 手工打包脚本
+│   ├── app-src/                 # Manifest、MainActivity.java、strings.xml
+│   └── scripts/build_apk.py     # aapt2 → javac → d8 → zipalign → apksigner
+├── buildozer.spec               # 安卓 APK 打包配置（Kivy 路线）
 ├── 矩阵计算工具.spec             # PyInstaller 桌面 exe 打包配置
 ├── build_apk.sh                 # 在 WSL Ubuntu 里构建 APK
 └── docs/                        # 开发过程与两端打包指南
@@ -105,7 +108,8 @@ python tests/desktop/selftest.py
 ## 打包
 
 - Windows 桌面 exe：[docs/打包-Windows.md](docs/打包-Windows.md)
-- 安卓 APK：[docs/打包-Android.md](docs/打包-Android.md)
+- 安卓 APK（WebView 壳，**当前可用**）：[docs/打包-Android-WebView.md](docs/打包-Android-WebView.md)，产物 `dist/矩阵计算工具.apk`，一条命令 `python android-build/scripts/build_apk.py` 重建
+- 安卓 APK（Kivy + Buildozer，本机未跑通）：[docs/打包-Android.md](docs/打包-Android.md)
 
 ## 已知限制
 
@@ -113,7 +117,7 @@ python tests/desktop/selftest.py
 - 所有浮点判零统一用 `1e-12` 阈值，接近奇异的矩阵可能被判定为奇异。
 - 等价标准形只返回按秩构造的 `[I_r 0; 0 0]`，不记录过程中的行列交换，因此不能用来反推变换矩阵。
 - Tkinter 版在输入有误时只弹错误提示框，不会清空上一次的结果区，屏幕上有可能是旧结果。
-- 安卓 APK 至今没有构建成功过，卡在网络无法访问 `dl.google.com` / Gradle / PyPI，详见打包文档。
+- 安卓版目前有两个打包路线：实际可用的是 WebView 壳（`dist/矩阵计算工具.apk`，界面即 `webapp/`，完全离线、不申请权限）；Kivy + Buildozer 那条依赖 NDK 交叉编译，本机仍未跑通，详见各自文档。
 - pywebview 桌面版需要系统已安装 Microsoft Edge WebView2 运行时，缺失时程序会弹窗提示。
 
 ## 开发过程

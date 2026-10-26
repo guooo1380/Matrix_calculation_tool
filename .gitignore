@@ -9,11 +9,20 @@ venv/
 # PyInstaller
 build/
 dist/
+dist-onedir/
 *.manifest
 
 # Buildozer / python-for-android
 .buildozer/
 bin/
+
+# Android 手工打包工具链：只保留 app-src/ 与 scripts/，其余按键需下载
+android-build/downloads/
+android-build/jdk/
+android-build/sdk/
+android-build/build/
+android-build/build.log
+android-build/*.jks
 
 # IDE
 .idea/

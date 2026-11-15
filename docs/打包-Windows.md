@@ -18,15 +18,39 @@ pip install -e ".[desktop,package]"   # pywebview>=6.0 + pyinstaller==6.22.3
 pyinstaller 矩阵计算工具.spec --noconfirm
 ```
 
-产物：`dist/矩阵计算工具.exe`，约 13.8 MB，单文件免安装，双击运行。中间文件在 `build/`，两者都已被 `.gitignore` 排除。
+产物：`dist/矩阵计算工具.exe`，约 11.8 MB，单文件免安装，双击运行。中间文件在 `build/`，两者都已被 `.gitignore` 排除。
 
 不用 spec、纯命令行打一遍等价于：
 
 ```bash
 pyinstaller --onefile --windowed --name "矩阵计算工具" --clean --noconfirm \
     --add-data "webapp;webapp" --icon webapp/app.ico \
+    --runtime-tmpdir "%LOCALAPPDATA%\MatrixCalculator" \
     --exclude-module tkinter --exclude-module _tkinter \
     matrix_desktop.py
+```
+
+## 解包目录（`runtime_tmpdir`）
+
+onefile 版启动时要把 exe 里打包的内容解压到一个临时目录，默认落在 `%TEMP%`。实测有机器会在这里失败，双击弹出 `Error / Could not create temporary directory!`（PyInstaller 内部错误码 PYI-2724），因此 spec 里显式指定了：
+
+```python
+runtime_tmpdir='%LOCALAPPDATA%\\MatrixCalculator'
+```
+
+三条经验，改这个值之前先看清楚：
+
+1. **bootloader 只创建最后一级目录**，父目录必须已经存在。写成 `%LOCALAPPDATA%\MatrixCalculator\runtime` 会报 `LOADER: failed to create runtime-tmpdir path ... CreateDirectory: 系统找不到指定的路径`。
+2. **不要指回 `%TEMP%`**。除了上面的拦截问题，还有第二层坑：如果解包目录在 `D:` 盘（例如用 `--runtime-tmpdir` 指到项目目录里调试），`.NET` 从该盘加载托管程序集会失败，表现为 `RuntimeError: Failed to resolve Python.Runtime.Loader.Initialize from ...\pythonnet\runtime\Python.Runtime.dll`（pywebview 依赖 pythonnet 调 WinForms），exe 无窗口直接退出。
+3. 改完 `runtime_tmpdir` 要重新打包，可用 `build/矩阵计算工具/EXE-00.toc` 确认新值确实写进了 exe。
+
+如果需要不依赖解包的一版（启动更快、也不用折腾临时目录），可以打成文件夹版：
+
+```bash
+pyinstaller --onedir --windowed --name "矩阵计算工具" --clean --noconfirm \
+    --add-data "webapp;webapp" --icon webapp/app.ico \
+    --exclude-module tkinter --exclude-module _tkinter \
+    --distpath dist-onedir matrix_desktop.py
 ```
 
 > `--add-data` 的分隔符在 Windows 上是 `;`，Linux/macOS 上是 `:`。

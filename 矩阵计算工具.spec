@@ -28,7 +28,12 @@ exe = EXE(
     strip=False,
     upx=True,
     upx_exclude=[],
-    runtime_tmpdir=None,
+    # 解包目录放在用户目录而不是 %TEMP%（部分机器上 %TEMP% 建目录会被拦截，
+    # 且 _MEI 落在 D 盘时 pythonnet 加载托管程序集会失败）。
+    # 注意：bootloader 只会创建最后一级目录，所以这里必须选一个「父目录已存在」的路径，
+    # 写成 ...\MatrixCalculator\runtime 会因为 MatrixCalculator 不存在而报
+    # 「系统找不到指定的路径」。bootloader 会展开环境变量。
+    runtime_tmpdir='%LOCALAPPDATA%\\MatrixCalculator',
     console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
